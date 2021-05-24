@@ -33,7 +33,7 @@ def index():
     return render_template("index.html")
 
 @app.route("/juego")
-@login_required
+#@login_required
 def juego():
     return render_template("juego.html")
 
