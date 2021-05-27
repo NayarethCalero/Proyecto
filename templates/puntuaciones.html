@@ -5,6 +5,42 @@
 {% endblock %}
 
 {% block main %}
+    <br>
+    <br>
+    <p class="text-center h1"> Tabla de puntuacion</p>
+
+    <br>
+    <br>
+<table>
+         <table class="table" style="width:100%">
+  <tr>
+    <th>Usuario</th>
+    <th>Puntuacion</th>
+  </tr>
+  {% for rows in rows %}
+  <tr>
+    <td>{{rows.Nombre}}</td>
+    <td>{{rows.Puntuacion}}</td>
+
+  </tr>
+{% endfor %}
+</table>
+
+    </table>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div class = "text-right">
+        <a href="/" class= "btn btn-primary " style="
+    margin-right: 20px;"> Volver</a>
+    </div>
 
 
 {% endblock %}

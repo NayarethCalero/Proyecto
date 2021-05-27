@@ -32,11 +32,30 @@ db = SQL("sqlite:///gorky.db")
 def index():
     return render_template("index.html")
 
-@app.route("/juego")
+@app.route("/juego" , methods=["GET", "POST"])
 #@login_required
 def juego():
-    return render_template("juego.html")
+    if request.method == "POST":
+        if not request.form.get("usuario"):
+            return apology("must provide username", 403)
+
+        db. execute("Insert into Usuario(Id, Nombre) values (NULL,:usuario)", usuario= request.form.get("usuario"))
+
+        session["usuario"] = request.form.get("usuario")
+        return render_template("juego.html")
 
 @app.route("/puntuaciones")
 def puntuaciones():
-    return render_template("puntuaciones.html")
+    rows = db.execute("SELECT * fRoM Usuario")
+    return render_template("puntuaciones.html", rows = rows)
+
+
+@app.route("/logout")
+def logout():
+    """Log user out"""
+
+    # Forget any user_id
+    session.clear()
+
+    # Redirect user to login form
+    return redirect("/")

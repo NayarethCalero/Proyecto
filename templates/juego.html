@@ -2,9 +2,11 @@
 <html>
 <head>
   <title>Snake</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="/static/indexLa.css">
   <style>
     body {
-      background: #444;
       text-align: center;
       margin: 64px 0 0 0;
     }
@@ -21,8 +23,10 @@
         color:green;
     }
   </style>
+
 </head>
 <body>
+    <a href="/logout" class= "btn btn-primary "> salir</a>
 <span id="a">0</span>
 <canvas width="500" height="500"></canvas>
 
@@ -105,7 +109,7 @@
       }
 
       if (state.snake.length === 0) {
-        //resetear contador cuando muere la serpiente
+        // resetear contador cuando muere la serpiente
         score=0;
         document.querySelector('#a').innerHTML = score;
         state.runState = STATE_RUNNING;
