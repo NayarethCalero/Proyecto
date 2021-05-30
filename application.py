@@ -37,23 +37,37 @@ def index():
 def juego():
     if request.method == "POST":
         if not request.form.get("usuario"):
-            return apology("must provide username", 403)
+            return apology("Debe ingresar su nombre", 403)
+        userE = db.execute("SELECT Nombre FROM Usuario WHERE Nombre = :username",username=request.form.get("usuario"))
+        if not userE :
+            db. execute("Insert into Usuario(Id, Nombre) values (NULL,:usuario)", usuario= request.form.get("usuario"))
+        else:
+            return apology("El usuario ya existe",400 )
+        nombre = db.execute("SELECT Id FROM Usuario WHERE Nombre = :username",username=request.form.get("usuario"))
 
-        db. execute("Insert into Usuario(Id, Nombre) values (NULL,:usuario)", usuario= request.form.get("usuario"))
-
-        session["usuario"] = request.form.get("usuario")
+        session["usuario"] = nombre[0]["Id"]
         return render_template("juego.html")
 
 @app.route("/puntuaciones")
 def puntuaciones():
     rows = db.execute("SELECT * fRoM Usuario")
-    return render_template("puntuaciones.html", rows = rows)
-
+    return render_template("puntuaciones.html", rows=rows)
 
 @app.route("/logout")
 def logout():
     """Log user out"""
 
+    # Forget any user_id
+    session.clear()
+
+    # Redirect user to login form
+    return redirect("/")
+
+@app.route("/logoutt/<puntuacion>")
+def logoutt(puntuacion):
+    """Log user out"""
+    punt = puntuacion
+    db.execute("update Usuario set Puntuacion = :score where id=:id",score=punt,id=session["usuario"])
     # Forget any user_id
     session.clear()
 

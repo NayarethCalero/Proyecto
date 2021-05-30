@@ -6,8 +6,12 @@
 
 {% block main %}
 <div class="container text-center">
+    <br>
+    <img alt="{{ top }}" width="500px" height="600px" class="border" src="http://memegen.link/custom/{{ top | urlencode }}/{{ bottom | urlencode }}.jpg?alt=https://i.pinimg.com/564x/e8/5f/95/e85f953dc07fa714b28cd0724a9c23c1.jpg"/>
 
-
-    <img alt="{{ top }}" class="border" src="http://memegen.link/custom/{{ top | urlencode }}/{{ bottom | urlencode }}.jpg?alt=https://i.pinimg.com/564x/e8/5f/95/e85f953dc07fa714b28cd0724a9c23c1.jpg"/>
 </div>
+<div class="container text-right">
+   <a href="/logout" class= "btn btn-primary "> volver</a>
+</div>
+
 {% endblock %}

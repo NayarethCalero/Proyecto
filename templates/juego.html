@@ -25,8 +25,8 @@
   </style>
 
 </head>
-<body>
-    <a href="/logout" class= "btn btn-primary "> salir</a>
+<body onload = "musica()">
+
 <span id="a">0</span>
 <canvas width="500" height="500"></canvas>
 
@@ -73,7 +73,17 @@
     };
   }
 
+
+function musica() {
+  new Audio("/static/juego.mp3").play();
+
+
+}
+
   function tick() {
+
+
+
     const head = state.snake[0];
     const dx = state.direction.x;
     const dy = state.direction.y;
@@ -90,6 +100,7 @@
     );
 
     if (state.runState === STATE_RUNNING) {
+
       for (let idx = highestIndex; idx > -1; idx--) {
         const sq = state.snake[idx];
 
@@ -104,26 +115,41 @@
     } else if (state.runState === STATE_LOSING) {
       interval = 10;
 
+
       if (state.snake.length > 0) {
         state.snake.splice(0, 1);
       }
 
       if (state.snake.length === 0) {
+
+        var mensj = window.confirm('Has perdido, tu puntuacion es:'+score+'\n¿Desea seguir jugando?');
+
+        if (mensj===true) {
+
+
         // resetear contador cuando muere la serpiente
         score=0;
         document.querySelector('#a').innerHTML = score;
         state.runState = STATE_RUNNING;
         state.snake.push(randomXY());
         state.prey = randomXY();
+        }
+        else {
+          window.close();
+          window.open("/logoutt/"+score)
+        }
       }
     }
 
     if (detectCollision()) {
+      var musi = new Audio("/static/muerte.mp3").play();
       state.runState = STATE_LOSING;
       state.growing = 0;
     }
 
     if (didScore) {
+
+      var music = new Audio("/static/comer.mp3").play();
       state.growing += GROW_SCALE;
       //cuando come aumentar puntuacion y agregarlo en pantalla
       score++;
@@ -185,6 +211,7 @@
   }
 
   window.onload = function() {
+    new Audio("/static/juego.mp3").play();
     state.canvas = document.querySelector('canvas');
     state.context = state.canvas.getContext('2d');
 
