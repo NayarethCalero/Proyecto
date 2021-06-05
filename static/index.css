@@ -1,0 +1,49 @@
+.container2{
+    height:35px;
+    width:200px;
+    margin-left:41%;
+}
+
+#video_background {
+ position: absolute;
+ bottom: 0px;
+ right: 0px;
+ min-width: 100%;
+ min-height: 100%;
+ width: 100%;
+ height: 100%;
+ z-index: -1000;
+ overflow: hidden;
+ }
+ #video_pattern {
+ background:#fff;
+ position: fixed;
+ opacity: 0.8;
+ left: 0px;
+ top: 0px;
+ width: 100%;
+ height: 100%;
+ z-index: 1;
+ }
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color:#C59536;
+}
+
+.color {
+    background-color:#C59536;
+    color:#0333FF;
+}
+
+.color:hover{
+    background-color:#7E00E8;
+
+}
+
+.bg-warning
+{
+    background-color:#57E47A!important;
+
+}

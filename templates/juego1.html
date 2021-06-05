@@ -1,0 +1,237 @@
+<!doctype html>
+<html>
+<head>
+  <title>Snake</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="/static/indexLa.css">
+  <style>
+    body {
+      text-align: center;
+      margin: 64px 0 0 0;
+    }
+    canvas {
+      border: solid 8px white;
+      background: linear-gradient(
+        0deg,
+        rgba(255, 255, 255, 1.0) 0%,
+        rgba(255, 255, 255, 1.0) 100%
+      );
+    }
+    span
+    {
+        color:green;
+    }
+  </style>
+
+</head>
+<body onload = "musica()">
+
+<span id="a">0</span>
+<canvas width="500" height="500"></canvas>
+
+<script>
+  var a = document.getElementById('a').textContent;
+  const STATE_RUNNING = 1;
+  const STATE_LOSING = 2;
+  //crear variable de puntuacion
+  let score = -1;
+  const TICK = 50;
+  const SQUARE_SIZE = 10;
+  const BOARD_WIDTH = 50;
+  const BOARD_HEIGHT = 50;
+  const GROW_SCALE = 10;
+  const DIRECTIONS_MAP = {
+    'A': [-1,  0],
+    'D': [ 1,  0],
+    'S': [ 0,  1],
+    'W': [ 0, -1],
+    'a': [-1,  0],
+    'd': [ 1,  0],
+    's': [ 0,  1],
+    'w': [ 0, -1],
+    'ArrowUp': [ 0,-1],
+        'ArrowDown': [ 0, 1],
+        'ArrowLeft': [-1, 0],
+        'ArrowRight':[ 1, 0],
+  };
+
+  let state = {
+    canvas: null,
+    context: null,
+    snake: [{x: 0, y: 0}],
+    direction: {x: 1, y: 0},
+    prey: {x: 0, y: 0},
+    growing: 0,
+    runState: STATE_RUNNING
+  };
+
+  function randomXY() {
+    return {
+      x: parseInt(Math.random() * BOARD_WIDTH),
+      y: parseInt(Math.random() * BOARD_HEIGHT)
+    };
+  }
+
+
+function musica() {
+  new Audio("/static/juego.mp3").play();
+
+
+}
+
+  function tick() {
+
+
+
+    const head = state.snake[0];
+    const dx = state.direction.x;
+    const dy = state.direction.y;
+    const highestIndex = state.snake.length - 1;
+    let tail = {};
+    let interval = TICK;
+
+    Object.assign(tail,
+      state.snake[state.snake.length - 1]);
+
+    let didScore = (
+      head.x === state.prey.x
+      && head.y === state.prey.y
+    );
+
+    if (state.runState === STATE_RUNNING) {
+
+      for (let idx = highestIndex; idx > -1; idx--) {
+        const sq = state.snake[idx];
+
+        if (idx === 0) {
+          sq.x += dx;
+          sq.y += dy;
+        } else {
+          sq.x = state.snake[idx - 1].x;
+          sq.y = state.snake[idx - 1].y;
+        }
+      }
+    } else if (state.runState === STATE_LOSING) {
+      interval = 10;
+
+
+      if (state.snake.length > 0) {
+        state.snake.splice(0, 1);
+      }
+
+      if (state.snake.length === 0) {
+
+        var mensj = window.confirm('Has perdido, tu puntuacion es:'+score+'\n¿Desea seguir jugando?');
+
+        if (mensj===true) {
+
+
+        // resetear contador cuando muere la serpiente
+        score=0;
+        document.querySelector('#a').innerHTML = score;
+        state.runState = STATE_RUNNING;
+        state.snake.push(randomXY());
+        state.prey = randomXY();
+        }
+        else {
+          window.open("/logoutt/"+score)
+          window.close();
+        }
+      }
+    }
+
+    if (detectCollision()) {
+      var musi = new Audio("/static/muerte.mp3").play();
+      state.runState = STATE_LOSING;
+      state.growing = 0;
+    }
+
+    if (didScore) {
+
+      var music = new Audio("/static/comer.mp3").play();
+      state.growing += GROW_SCALE;
+      //cuando come aumentar puntuacion y agregarlo en pantalla
+      score++;
+      document.querySelector('#a').innerHTML = score;
+      state.prey = randomXY();
+    }
+
+    if (state.growing > 0) {
+      state.snake.push(tail);
+      state.growing -= 1;
+    }
+
+    requestAnimationFrame(draw);
+    setTimeout(tick, interval);
+  }
+
+  function detectCollision() {
+    const head = state.snake[0];
+
+    if (head.x < 0
+      || head.x >= BOARD_WIDTH
+      || head.y >= BOARD_HEIGHT
+      || head.y < 0
+    ) {
+      return true;
+    }
+
+    for (var idx = 1; idx < state.snake.length; idx++) {
+      const sq = state.snake[idx];
+
+      if (sq.x === head.x && sq.y === head.y) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  function drawPixel(color, x, y) {
+    state.context.fillStyle = color;
+    state.context.fillRect(
+      x * SQUARE_SIZE,
+      y * SQUARE_SIZE,
+      SQUARE_SIZE,
+      SQUARE_SIZE
+    );
+  }
+
+  function draw() {
+    state.context.clearRect(0, 0, 500, 500);
+
+    for (var idx = 0; idx < state.snake.length; idx++) {
+      const {x, y} = state.snake[idx];
+      drawPixel('#030100', x, y);
+    }
+
+    const {x, y} = state.prey;
+    drawPixel('#000000', x, y);
+  }
+
+  window.onload = function() {
+    /*new Audio("/static/juego.mp3").play();*/
+    state.canvas = document.querySelector('canvas');
+    state.context = state.canvas.getContext('2d');
+
+    window.onkeydown = function(e) {
+      const direction = DIRECTIONS_MAP[e.key];
+
+      if (direction) {
+        const [x, y] = direction;
+        if (-x !== state.direction.x
+          && -y !== state.direction.y)
+        {
+          state.direction.x = x;
+          state.direction.y = y;
+        }
+      }
+    }
+
+    tick();
+  };
+</script>
+
+</body>
+</html>

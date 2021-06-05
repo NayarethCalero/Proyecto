@@ -5,42 +5,39 @@
 {% endblock %}
 
 {% block main %}
-    <br>
-    <br>
-    <p class="text-center h1"> Tabla de puntuacion</p>
 
-    <br>
-    <br>
-<table>
+
          <table class="table" style="width:100%">
-  <tr>
+              <TR>
+      <TH class="text-center h1 "style="background-color:#00ca4b "  COLSPAN="2">
+          <p class="text-center h1 "> Tabla de puntuacion</p>
+      </TH>
+   </TR>
+  <tr style="background-color:#07ff7b " >
     <th>Usuario</th>
     <th>Puntuacion</th>
   </tr>
   {% for rows in rows %}
-  <tr>
+  <tr style="background-color:#6effac;" class= "color2 font-weight-bold">
     <td>{{rows.Nombre}}</td>
     <td>{{rows.Puntuacion}}</td>
 
   </tr>
 {% endfor %}
-</table>
-
-    </table>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <div class = "text-right">
+<tr COLSPAN="2" style="background-color:#6effac;" class= "color2 font-weight-bold">
+    <td COLSPAN="2"> <div class = "text-right">
         <a href="/" class= "btn btn-primary " style="
     margin-right: 20px;"> Volver</a>
-    </div>
+    </div></td>
+</tr>
+</table>
+
+ <p class="text-right h-10"style="background-color:#FCF700; margin-left:50%; width: 200px; margin-bottom:0">Puntuacion:  <span  id="a">0</span></p>
+
+
+
+
+
 
 
 {% endblock %}

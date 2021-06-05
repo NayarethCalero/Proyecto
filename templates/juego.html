@@ -6,6 +6,7 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <link rel="stylesheet" href="/static/indexLa.css">
   <style>
+
     body {
       text-align: center;
       margin: 64px 0 0 0;
@@ -14,8 +15,8 @@
       border: solid 8px white;
       background: linear-gradient(
         0deg,
-        rgba(0, 102, 204, 1.0) 0%,
-        rgba(125, 60, 152, 1.0) 100%
+        rgba(38, 215, 45, 0.75) 0%,
+        rgba(56, 237, 31, 0.93) 100%
       );
     }
     span
@@ -25,10 +26,13 @@
   </style>
 
 </head>
-<body onload = "musica()">
+<body onload = "musica()" style="background-color:#000000">
 
-<span id="a">0</span>
-<canvas width="500" height="500"></canvas>
+
+  <p class="h6 h-10" style="background-color:#FCF700; margin-left:60%; width: 200px; margin-bottom:0"> Puntuacion:  <span  id="a">0</span></p>
+
+
+<canvas width="700" height="500"></canvas>
 
 <script>
   var a = document.getElementById('a').textContent;
@@ -38,7 +42,7 @@
   let score = -1;
   const TICK = 80;
   const SQUARE_SIZE = 10;
-  const BOARD_WIDTH = 50;
+  const BOARD_WIDTH = 70;
   const BOARD_HEIGHT = 50;
   const GROW_SCALE = 10;
   const DIRECTIONS_MAP = {
@@ -113,7 +117,7 @@ function musica() {
         }
       }
     } else if (state.runState === STATE_LOSING) {
-      interval = 10;
+      interval = 50;
 
 
       if (state.snake.length > 0) {
@@ -135,8 +139,8 @@ function musica() {
         state.prey = randomXY();
         }
         else {
-          window.close();
           window.open("/logoutt/"+score)
+          window.close();
         }
       }
     }
@@ -199,15 +203,15 @@ function musica() {
   }
 
   function draw() {
-    state.context.clearRect(0, 0, 500, 500);
+    state.context.clearRect(0, 0, 700, 500);
 
     for (var idx = 0; idx < state.snake.length; idx++) {
       const {x, y} = state.snake[idx];
-      drawPixel('#22dd22', x, y);
+      drawPixel('#FCF700', x, y);
     }
 
     const {x, y} = state.prey;
-    drawPixel('yellow', x, y);
+    drawPixel('#000000', x, y);
   }
 
   window.onload = function() {
